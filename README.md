@@ -2,7 +2,7 @@
 
 Server-side Fabric utilities for the Saurona Middle-earth server.
 
-This mod is designed to run on the dedicated server only. It provides chat tools, staff roles, prefixes, faction homes, economy, backpacks, playstyle modes, hunts, timed rewards, NPC traders, collectibles, music zones, Discord sync hooks, and staff moderation utilities.
+This mod is designed to run on the dedicated server only. It provides chat tools, staff roles, prefixes, faction homes, economy, backpacks, playstyle modes, timed rewards, NPC traders, collectibles, music zones, Discord sync hooks, and staff moderation utilities.
 
 ## Quick Start
 
@@ -56,7 +56,7 @@ Staff role permission behavior:
 | --- | --- | ---: | --- | --- | --- | --- |
 | Owner | yes | 4 | yes | yes | yes | yes |
 | Manager | yes | 4 | yes | yes | yes | yes |
-| Admin | yes | 3 | yes | yes | yes | no |
+| Admin | yes | 3 | yes | yes | yes | yes |
 | Mod | no | 0 | yes | yes | yes | no |
 | Advisor | no | 0 | no | no | no | no |
 | Guide | no | 0 | no | no | no | no |
@@ -88,6 +88,9 @@ world/server-side-mail.json
 world/server-side-stats.json
 world/server-side-traders.json
 world/server-side-alts.json
+world/server-side-weekly-challenges.json
+world/server-side-bounties.json
+world/server-side-announcements.json
 ```
 
 Other feature folders/files:
@@ -187,28 +190,26 @@ Haven:
 
 - PvP against players is blocked.
 - Inventory is kept on death.
-- Player hunts are blocked.
 - Prefix: `[H]`.
 
 Mortal:
 
 - PvP is allowed only between Mortal players.
-- Inventory drops normally on death.
-- Player hunts are allowed.
+- Inventory drops normally on death outside keep-inventory protected worlds.
 - Prefix: `[M]`.
 - Players cannot switch themselves back to Haven.
 
 Commands:
 
 ```text
-/haven
 /playstyle
 /mortal
 /mortal confirm
+/mortal reject
 /playstyle set <player> <haven|mortal>
 ```
 
-`/mortal` shows a warning. `/mortal confirm` permanently opts the player into Mortal until staff changes it.
+`/mortal` shows a serious warning with clickable Accept and Deny buttons. `/mortal confirm` permanently opts the player into Mortal until staff changes it, while `/mortal reject` leaves the player Haven.
 
 `/playstyle set` requires moderation access.
 
@@ -219,37 +220,6 @@ world/server-side-playstyles.json
 ```
 
 Discord sync is called when a linked player switches mode.
-
-## Player Hunts
-
-Hunts are Mortal-only PvP events.
-
-Commands:
-
-```text
-/hunt start <player>
-/hunt aid <player>
-/hunt end
-```
-
-Behavior:
-
-- Hunter and target must both be Mortal.
-- A player can only be in one hunt at a time.
-- The hunt has a preparation timer before becoming active.
-- Active hunt participants are prevented from teleporting far away or changing dimension.
-- The hunt ends when a participant dies, runs out of time, disconnects from participation, or uses `/hunt end`.
-
-Config:
-
-```json
-"huntPreparationSeconds": 60,
-"huntDurationMinutes": 30,
-"huntCooldownMinutes": 60,
-"huntTeleportBlockSeconds": 30
-```
-
-Hunt state is in memory and is not persisted across server restart.
 
 ## Factions And Faction Homes
 
@@ -265,10 +235,11 @@ Player commands:
 
 ```text
 /faction home
+/fhome
 /faction sethome
 /faction homeinfo
 /faction clearhome
-/faction info <faction>
+/faction info <faction> [page]
 /faction list
 ```
 
@@ -299,9 +270,11 @@ Admin faction home commands:
 Teleport behavior:
 
 - `/faction home` automatically uses the player's current faction.
+- `/faction list` shows the player's current faction information.
 - No faction means no faction home access.
 - Leaders can set and clear their own faction home.
 - Staff can set, clear, and inspect any faction home.
+- Faction info shows members 10 per page.
 - Teleport warmup, cooldown, cancel-on-move, cancel-on-damage, sounds, particles, and cross-dimension behavior are configurable.
 - Defaults mirror TPX-style `/home`: 3 second warmup, 30 second cooldown, cancel on movement/damage, cross-dimension allowed.
 
@@ -342,7 +315,10 @@ Commands:
 /balance <player>
 /deposit <amount>
 /deposit all
+/dep <amount>
+/dep all
 /withdraw <amount>
+/wdraw <amount>
 /transfer <player> <amount>
 /bank top
 /baltop
@@ -392,13 +368,13 @@ Commands:
 
 Behavior:
 
-- Backpacks start at tier 0.
+- Players start with 1 row.
 - Max visible size is capped at 6 rows.
-- Upgrades use bank balance.
-- Default upgrade cost is 1000 coins per tier.
-- Downgrading refunds the configured cost for the current tier.
+- Player coin purchases for backpack upgrades are disabled.
+- Backpack upgrades come from timed rewards or staff/admin upgrade commands.
+- The internal tier/level controls remain, but custom tier names are not shown.
 - Downgrading is blocked if items exist in rows that would be removed.
-- `/view backpack <player>` requires moderation access.
+- `/backpack upgrade`, `/backpack downgrade`, and `/view backpack <player>` require staff access.
 
 Timed rewards can grant a free backpack upgrade with:
 
@@ -430,8 +406,10 @@ Behavior:
 - AFK players stop gaining active playtime.
 - Rewards are claimed automatically once thresholds are reached.
 - The first default reward is at 10 hours.
-- Later reward slots are every 20 hours up to 500 hours.
+- Defaults are every 10 hours up to 100, every 25 hours from 100-200, then every 50 hours after 200 up to 500.
 - `/craft` opens a virtual crafting table after it is unlocked.
+- Staff with moderation access can use `/craft` without waiting for the 10-hour unlock.
+- Default rewards avoid coin payouts and use things like backpack upgrades, XP, resources, and TPX home-limit bonuses.
 
 Default first reward:
 
@@ -454,9 +432,117 @@ Built-in reward commands:
 ```text
 serverside:grant_craft
 serverside:upgrade_backpack
+serverside:tpx_home_limit:<amount>
 ```
 
 Other commands are run from the server command source.
+
+## Weekly Challenges
+
+Weekly challenges are server-wide objectives that track player progress automatically.
+
+Data file:
+
+```text
+world/server-side-weekly-challenges.json
+```
+
+Command:
+
+```text
+/challenges
+```
+
+Supported default challenge types:
+
+```text
+travel
+mine
+kill
+place
+```
+
+Config controls:
+
+- Enable/disable.
+- Number of weekly challenges.
+- Weekly reset day and time.
+- Challenge pool, targets, amounts, and rewards.
+
+Rewards use the same reward structure as timed rewards, so they can grant XP, items, coins if desired, or command-based rewards.
+
+## Bounties And Headhunter
+
+Bounties are Mortal-only PvP rewards.
+
+Data file:
+
+```text
+world/server-side-bounties.json
+```
+
+Commands:
+
+```text
+/bounty
+/bounty list
+/bounty place <player> <amount>
+/bounty add <player> <amount>
+/bounty view <player>
+/bounty clear <player>
+/headhunter apply
+/headhunter remove
+```
+
+Behavior:
+
+- Only Mortal players can place bounties.
+- Only Mortal players can receive bounties.
+- The placer pays the full coin amount immediately.
+- Self-bounties are blocked.
+- Bounty payouts are blocked when accounts share the same Discord link.
+- Eligible Mortal killers receive the bounty balance on kill.
+- Completion counts persist across restarts.
+- After the configured number of completed bounties, the player receives a Headhunter Writ item.
+- Right-clicking the writ unlocks the Headhunter ability permanently for that player.
+- `/headhunter apply` marks the held weapon as Headhunter-enabled.
+- A player with the unlock can make victims drop their player head when killing with a marked weapon.
+
+Important config:
+
+```json
+"bountiesEnabled": true,
+"bountyMinCoins": 100,
+"bountyHeadhunterRequiredCompletions": 5,
+"bountyHeadDropChance": 0.25
+```
+
+## Automated Announcements
+
+Automated announcements rotate concise server tips and reminders.
+
+Messages file:
+
+```text
+world/server-side-announcements.json
+```
+
+Commands require OP level 4:
+
+```text
+/announcements reload
+/announcements enable
+/announcements disable
+```
+
+Important config:
+
+```json
+"announcementsEnabled": true,
+"announcementIntervalMinutes": 15
+```
+
+The message file is meant to be edited directly. `/announcements reload` reloads message edits without rebuilding the mod.
 
 ## Spawn Starter Items
 
@@ -480,6 +566,13 @@ Config:
 ```
 
 The check looks at the player's inventory and server-side backpack. If a required item is missing while the player is in the overworld spawn area, it is returned to the player.
+
+Spawn protection:
+
+- `overworldKeepInventory` keeps inventory enabled in the normal overworld.
+- `spawnProtectionEnabled` protects the configured spawn radius around the overworld shared spawn.
+- Spawn protection can block PvP, player damage, block breaking, and block placing.
+- `spawnProtectionBypassPermissionLevel` lets high-level staff build in protected spawn.
 
 ## Custom NPC Traders
 
@@ -684,6 +777,7 @@ Notes:
 - `/view inv` and `/view echest` can inspect online or offline player data.
 - `/view backpack` opens the server-side backpack.
 - `/vanish` hides a staff member from normal players.
+- `/silentjoinleave` hides a staff member's join and leave messages without enabling vanish.
 - `/silence` toggles public chat silence.
 
 ## Economy Item Cosmetics
@@ -696,14 +790,15 @@ Commands:
 /engrave
 /lore <text>
 /lore clear
-/glint
+/unbreakable
 ```
 
 Behavior:
 
 - `/rename` charges `cosmeticRenameCost` from bank balance.
 - `/engrave` charges `cosmeticEngraveCost` and writes ownership lore.
-- `/lore` and `/glint` require moderation access.
+- `/lore` requires moderation access.
+- `/unbreakable` requires full OP and makes the held item unbreakable.
 - Rename/engrave only work on a single held item stack.
 
 ## Stats
@@ -947,6 +1042,14 @@ Player command:
 
 Used with the Discord bot's link flow.
 
+Staff manual verification:
+
+```text
+/link verify <player>
+```
+
+This is for approved exceptions, such as an owner alt or a rare player who cannot use Discord. It marks the Minecraft account linked without assigning Discord roles.
+
 Discord sync hooks include:
 
 - Minecraft account linking.
@@ -955,34 +1058,28 @@ Discord sync hooks include:
 - Punishment logs.
 - Stats lookups.
 
-## Tree Chopper And Leaf Decay
-
-Tree Chopper is configurable and runs server-side.
-
-Important config:
-
-```json
-"treeChopperEnabled": true,
-"treeChopperRequireLeaves": true,
-"treeChopperMaxTreeSize": 4096,
-"treeChopperMaxWorkPerTick": 256,
-"fastLeafDecay": true,
-"fastLeafDecayRadius": 5,
-"fastLeafDecayMaxPerTick": 96,
-"fastLeafDecayDelayTicks": 20
-```
-
-When enabled, trees can be processed in batches and leaves decay faster after chopping.
-
 ## Welcome Rewards
 
-The welcome feature rewards players for welcoming new players.
+The welcome feature rewards players for welcoming new players. It is disabled by default for launch.
+
+Commands:
+
+```text
+/welcome
+/welcome enable
+/welcome disable
+/welcome on
+/welcome off
+```
 
 Config:
 
 ```json
-"newPlayerWelcomeMessage": "&5Welcome #PLAYER to the server!",
-"welcomeRewardXp": 55
+"welcomeEnabled": false,
+"newPlayerWelcomeMessage": "&#5E4B8BWelcome #PLAYER to the server!",
+"welcomeRewardXp": 55,
+"welcomeMithrilChance": 0.1,
+"welcomeMithrilItem": "middle-earth:mithril_nugget"
 ```
 
 ## Messages
@@ -1017,6 +1114,14 @@ The default Saurona prefix format is:
 The alias manager registers command aliases from config. Aliases forward to configured target commands and preserve extra arguments.
 
 Use aliases for short commands or server-specific command names without adding new command code.
+
+Built-in banking aliases:
+
+```text
+/dep <amount>
+/dep all
+/wdraw <amount>
+```
 
 ## Common Admin Setup Checklist
 
