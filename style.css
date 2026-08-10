@@ -432,3 +432,47 @@ li {
     grid-template-columns: 1fr;
   }
 }
+
+/* Structure, settlement, and production content */
+.standard-grid,
+.requirement-grid {
+  display: grid;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.standard-row,
+.requirement-row {
+  display: grid;
+  grid-template-columns: 165px 1fr;
+  gap: 22px;
+  align-items: start;
+  padding: 15px 16px;
+  border-left: 3px solid var(--gold);
+  border-radius: 9px;
+  background: rgba(255, 255, 255, .025);
+}
+
+.standard-row strong,
+.requirement-row strong {
+  color: var(--gold-light);
+  line-height: 1.55;
+}
+
+.standard-row span,
+.requirement-row span {
+  color: #d7d2dc;
+  line-height: 1.67;
+}
+
+.production-rate strong {
+  color: var(--gold-light);
+}
+
+@media (max-width: 620px) {
+  .standard-row,
+  .requirement-row {
+    grid-template-columns: 1fr;
+    gap: 5px;
+  }
+}
