@@ -5,10 +5,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>Saurona | Server Rules</title>
+    <title>Saurona | Server-Side Feature Guide</title>
 
     <link rel="icon" type="image/png" href="favicon.png">
-
     <link rel="stylesheet" href="style.css" />
 </head>
 
@@ -16,13 +15,23 @@
     <aside class="sidebar">
         <img src="logo.gif" class="side-logo" alt="Saurona Logo">
         <h2>Saurona</h2>
-        <p>Server Information</p>
+        <p>Server-Side Guide</p>
 
         <nav>
             <a href="#overview">Overview</a>
-            <a href="#rules">Server Rules</a>
-            <a href="#conduct">Community Conduct</a>
-            <a href="#gameplay">Gameplay Rules</a>
+            <a href="#quick-start">Quick Start</a>
+            <a href="#prefixes">Prefixes</a>
+            <a href="#playstyles">Playstyles</a>
+            <a href="#factions">Factions</a>
+            <a href="#economy">Economy</a>
+            <a href="#rewards">Rewards</a>
+            <a href="#challenges">Challenges</a>
+            <a href="#bounties">Bounties</a>
+            <a href="#recipes">Recipes</a>
+            <a href="#traders">Traders</a>
+            <a href="#staff">Staff Tools</a>
+            <a href="#discord">Discord</a>
+            <a href="#checklist">Setup</a>
         </nav>
     </aside>
 
@@ -30,55 +39,373 @@
         <section class="hero" id="overview">
             <div class="hero-glow"></div>
             <div class="hero-text-box">
-                <span class="eyebrow">Server Hub</span>
+                <span class="eyebrow">Server-Side Mod</span>
                 <h1>Saurona</h1>
+                <p class="hero-summary">A quick feature reference for the Saurona Middle-earth server: commands, config files, player systems, staff tools, Discord sync, and launch setup.</p>
+                <div class="pill-row">
+                    <span class="pill">/ss reload</span>
+                    <span class="pill">/commands</span>
+                    <span class="pill">/playstyle</span>
+                    <span class="pill">/faction home</span>
+                </div>
             </div>
         </section>
 
-        <section class="rules-heading" id="rules">
-            <span>Server Rules</span>
-            <h2>Rules & Guidelines</h2>
+        <section class="rules-heading">
+            <span>Feature Guide</span>
+            <h2>Server Systems</h2>
         </section>
 
-        <section class="card" id="conduct">
-            <h2>Community Conduct</h2>
-            <ul>
-                <li>Treat others with respect. Harassment, discrimination, threats, targeted abuse, and excessive
-                    toxicity are not allowed.</li>
-                <li>Keep disagreements civil. Do not repeatedly provoke, insult, target, or create problems with others.
-                </li>
-                <li>Do not spam, flood chat, impersonate others, or intentionally disrupt conversations or server
-                    activities.</li>
-                <li>NSFW content, doxxing, malicious links, DDoS threats, or other content intended to threaten or endanger someone is not allowed.</li>
-                <li>Do not advertise other Minecraft servers, Discord servers, communities, products, or services.</li>
-                <li>Do not intentionally deceive, scam, or trick other players in trades or agreements.</li>
-                <li>Treat staff with respect and cooperate with them when they are handling server matters.</li>
-            </ul>
+        <section class="feature-grid" id="quick-start">
+            <article class="card wide-card">
+                <span class="card-number">01</span>
+                <h2>Quick Start</h2>
+                <p>Saurona Server-Side is a dedicated-server Fabric mod. Build the jar, place it in the server mods folder, restart once, then edit the generated world files.</p>
+                <div class="code-block">
+                    <span>Build jar</span>
+                    <code>.\gradlew.bat build</code>
+                    <code>build/libs/server-side-1.0.0.jar</code>
+                </div>
+                <div class="code-block">
+                    <span>Main config</span>
+                    <code>world/server-side-config.json</code>
+                    <code>/ss reload</code>
+                    <code>/serverside reload</code>
+                </div>
+                <p class="note">Reload requires OP level 4. Restarting is safest after adding a new jar or after large manual data edits.</p>
+            </article>
+
+            <article class="card">
+                <h2>Permissions</h2>
+                <ul>
+                    <li>OP 4: owner tools, config reload, staff roles, view distance, full admin.</li>
+                    <li>OP 3: admin moderation and gamemode access.</li>
+                    <li>OP 2: utility access such as teleport, fly, staff chat, and collectibles.</li>
+                    <li>Staff roles can grant access without giving full OP.</li>
+                </ul>
+            </article>
+
+            <article class="card">
+                <h2>Data Files</h2>
+                <ul class="compact-list">
+                    <li><code>world/server-side-bank.json</code></li>
+                    <li><code>world/server-side-backpacks.json</code></li>
+                    <li><code>world/server-side-factions.json</code></li>
+                    <li><code>world/server-side-staff-roles.json</code></li>
+                    <li><code>world/server-side-playstyles.json</code></li>
+                    <li><code>world/server-side-weekly-challenges.json</code></li>
+                    <li><code>world/server-side-bounties.json</code></li>
+                    <li><code>world/server-side-recipes.json</code></li>
+                </ul>
+            </article>
         </section>
 
-        <section class="card" id="gameplay">
-            <h2>Gameplay Rules</h2>
-            <ul>
-                <li>One account per player. Alternate accounts are not allowed.</li>
-                <li>No hacked clients, cheats, x-ray, autoclickers, macros, scripts, or anything else that provides an
-                    unfair advantage.</li>
-                <li>The official modpack must be used. Additional client-side quality-of-life and performance mods, such
-                    as minimaps, FullBright, HUD improvements, shaders, and similar mods are allowed as long as they do
-                    not provide an unfair advantage.</li>
-                <li>No duping, bug abuse, exploit abuse, or intentionally taking advantage of broken or unintended
-                    mechanics. Serious exploits should be reported to staff.</li>
-                <li>No stealing, griefing, or intentionally damaging another player's builds or property.</li>
-                <li>AFK pools, movement loops, macros, or other methods used to bypass the server's AFK system are not
-                    allowed.</li>
-                <li>Fly is provided for building only. Do not use it for travel, exploration, PvP, escaping danger,
-                    gathering resources, or any other gameplay advantage.</li>
-            </ul>
+        <section class="feature-grid" id="prefixes">
+            <article class="card wide-card">
+                <span class="card-number">02</span>
+                <h2>Prefixes</h2>
+                <p>Prefixes are controlled from <code>server-side-config.json</code>. Chat display order is playstyle first, then main prefix, then faction leader tag.</p>
+                <div class="meta-grid">
+                    <div>
+                        <strong>Order</strong>
+                        <span>[H]/[M] - staff/faction/Wanderer - [L] - name</span>
+                    </div>
+                    <div>
+                        <strong>Tab List</strong>
+                        <span>Only the main prefix shows. Staff can be sorted near the top.</span>
+                    </div>
+                    <div>
+                        <strong>Bracket Style</strong>
+                        <span>Gray brackets with colored role text.</span>
+                    </div>
+                </div>
+            </article>
+
+            <article class="card">
+                <h2>Staff Roles</h2>
+                <ul>
+                    <li>Owner: <code>#5E4B8B</code>, OP 4.</li>
+                    <li>Manager: <code>#C89B4A</code>, OP 4.</li>
+                    <li>Admin: <code>#4C6FB3</code>, OP 3.</li>
+                    <li>Mod: <code>#B65F7A</code>, moderation, fly, teleport.</li>
+                    <li>Advisor: <code>#B8734F</code>, prefix only.</li>
+                    <li>Guide: <code>#718C5A</code>, prefix only.</li>
+                </ul>
+                <div class="command-grid">
+                    <code>/staff add &lt;player&gt; &lt;role&gt;</code>
+                    <code>/staff remove &lt;player&gt;</code>
+                </div>
+            </article>
+
+            <article class="card">
+                <h2>Faction Prefixes</h2>
+                <p>Faction colors are unique hex values in the config so they can match the Discord roles.</p>
+                <p>Wanderer is the default join prefix and uses <code>#91B2D1</code>.</p>
+            </article>
+        </section>
+
+        <section class="feature-grid" id="playstyles">
+            <article class="card wide-card">
+                <span class="card-number">03</span>
+                <h2>Haven And Mortal</h2>
+                <p>Haven is the default playstyle. Mortal is a permanent opt-in with a clear warning and clickable confirmation.</p>
+                <div class="section-grid">
+                    <div class="mini-card">
+                        <h3>Haven [H]</h3>
+                        <p>PvP protected against other players, keep inventory enabled, and excluded from hunts or bounties.</p>
+                        <code>#6F8FAF</code>
+                    </div>
+                    <div class="mini-card">
+                        <h3>Mortal [M]</h3>
+                        <p>PvP enabled with other Mortals, inventory drops on death, and eligible for bounties.</p>
+                        <code>#C47A45</code>
+                    </div>
+                </div>
+                <div class="command-grid">
+                    <code>/playstyle</code>
+                    <code>/playstyle mortal</code>
+                    <code>/playstyle reset &lt;player&gt; &lt;haven|mortal&gt;</code>
+                </div>
+            </article>
+        </section>
+
+        <section class="feature-grid" id="factions">
+            <article class="card wide-card">
+                <span class="card-number">04</span>
+                <h2>Factions And Homes</h2>
+                <p>Faction homes are stored by faction, not by leader, so leadership changes do not move the home. Teleport warmup, cooldown, movement cancel, damage cancel, sounds, particles, and messages are configurable.</p>
+                <div class="command-grid">
+                    <code>/faction join &lt;faction&gt;</code>
+                    <code>/faction leave</code>
+                    <code>/faction info [faction] [page]</code>
+                    <code>/faction home</code>
+                    <code>/faction sethome</code>
+                    <code>/faction homeinfo</code>
+                    <code>/faction clearhome</code>
+                    <code>/factionadmin sethome &lt;faction&gt;</code>
+                    <code>/factionadmin clearhome &lt;faction&gt;</code>
+                    <code>/factionadmin homeinfo &lt;faction&gt;</code>
+                </div>
+                <p class="note">Use <code>/faction info</code> for your own faction, or <code>/faction info &lt;faction&gt;</code> to inspect another faction when allowed.</p>
+            </article>
+        </section>
+
+        <section class="feature-grid" id="economy">
+            <article class="card">
+                <h2>Economy And Bank</h2>
+                <p>Coins are item-based and can be deposited into a player bank. Withdraw aliases are available for faster use.</p>
+                <div class="command-grid">
+                    <code>/bank</code>
+                    <code>/balance</code>
+                    <code>/deposit all</code>
+                    <code>/dep all</code>
+                    <code>/withdraw &lt;amount&gt;</code>
+                    <code>/wdraw &lt;amount&gt;</code>
+                </div>
+            </article>
+
+            <article class="card">
+                <h2>Backpacks</h2>
+                <p>Players start at 1 row and can progress to 6 rows. Player coin upgrades are removed; backpack upgrades come from playtime rewards or staff commands.</p>
+                <div class="command-grid">
+                    <code>/backpack</code>
+                    <code>/bp</code>
+                    <code>/backpackadmin upgrade &lt;player&gt;</code>
+                    <code>/backpackadmin downgrade &lt;player&gt;</code>
+                </div>
+            </article>
+        </section>
+
+        <section class="feature-grid" id="rewards">
+            <article class="card wide-card">
+                <span class="card-number">05</span>
+                <h2>Timed Rewards And AFK</h2>
+                <p>Playtime rewards are configurable and skip AFK time. Rewards do not use coins by default and can grant items, XP, backpack upgrades, extra homes, abilities, and one-time reward items.</p>
+                <ul>
+                    <li>Every 10 hours up to 100 hours.</li>
+                    <li>Every 25 hours from 100 to 200 hours.</li>
+                    <li>Every 50 hours after 200 hours.</li>
+                    <li><code>/craft</code> unlocks at 10 hours; staff can use it for free.</li>
+                </ul>
+                <div class="command-grid">
+                    <code>/playtime</code>
+                    <code>/craft</code>
+                    <code>/ct</code>
+                    <code>/afk</code>
+                    <code>/stats</code>
+                </div>
+            </article>
+
+            <article class="card">
+                <h2>Spawn Items</h2>
+                <p>Players need the Starlight Phial and Middle-earth Map while leaving spawn. Missing items are replaced without duplicating items being moved between inventory and backpack.</p>
+                <ul>
+                    <li><code>middle-earth:starlight_phial</code></li>
+                    <li><code>middle-earth:middle_earth_map</code></li>
+                </ul>
+            </article>
+        </section>
+
+        <section class="feature-grid" id="challenges">
+            <article class="card wide-card">
+                <span class="card-number">06</span>
+                <h2>Weekly Challenges</h2>
+                <p>Weekly challenges track server-wide objectives with player progress persisted across restarts. Challenge names are objective-based so players can quickly tell what to do.</p>
+                <div class="meta-grid">
+                    <div>
+                        <strong>Types</strong>
+                        <span>Travel, break, mine, chop, harvest, kill, place, and playtime.</span>
+                    </div>
+                    <div>
+                        <strong>Reset</strong>
+                        <span>Configurable day, time, and timezone. Default timezone can be <code>America/Chicago</code>.</span>
+                    </div>
+                    <div>
+                        <strong>Bonus</strong>
+                        <span>Completing all weekly challenges can grant an extra completion reward.</span>
+                    </div>
+                </div>
+                <div class="command-grid">
+                    <code>/challenges</code>
+                    <code>/challenges page &lt;page&gt;</code>
+                </div>
+            </article>
+        </section>
+
+        <section class="feature-grid" id="bounties">
+            <article class="card wide-card">
+                <span class="card-number">07</span>
+                <h2>Bounties And Trophy Ability</h2>
+                <p>Bounties are Mortal-only. A Mortal can place a coin bounty on another Mortal, and an eligible Mortal killer can claim the reward.</p>
+                <div class="command-grid">
+                    <code>/bounty place &lt;player&gt; &lt;amount&gt;</code>
+                    <code>/bounty list</code>
+                    <code>/bounty view &lt;player&gt;</code>
+                    <code>/ability</code>
+                    <code>/abilityadmin item trophy</code>
+                    <code>/abilityadmin grant &lt;player&gt; &lt;ability&gt;</code>
+                    <code>/abilityadmin apply &lt;ability&gt;</code>
+                    <code>/abilityadmin remove</code>
+                </div>
+                <p class="note">The trophy ability can be applied to eligible weapons and has a configurable player-head drop chance.</p>
+            </article>
+        </section>
+
+        <section class="feature-grid" id="recipes">
+            <article class="card wide-card">
+                <span class="card-number">08</span>
+                <h2>Custom Recipe Manager</h2>
+                <p>Recipes can be disabled by ID from an editable data file. Disabled recipes are automatically reapplied on startup and every recipe/datapack reload.</p>
+                <div class="code-block">
+                    <span>Data file</span>
+                    <code>world/server-side-recipes.json</code>
+                </div>
+                <div class="command-grid">
+                    <code>/recipes list</code>
+                    <code>/recipes disable &lt;recipe&gt;</code>
+                    <code>/recipes enable &lt;recipe&gt;</code>
+                    <code>/recipes reload</code>
+                </div>
+                <p class="note">The reload logic logs how many configured recipes were disabled and safely skips missing recipe IDs.</p>
+            </article>
+        </section>
+
+        <section class="feature-grid" id="traders">
+            <article class="card wide-card">
+                <span class="card-number">09</span>
+                <h2>Custom NPC Traders</h2>
+                <p>Staff can turn explicitly selected vanilla or Middle-earth NPC entities into persistent custom traders while keeping their normal appearance. Right-click opens the vanilla merchant screen.</p>
+                <div class="command-grid">
+                    <code>/trader create &lt;id&gt;</code>
+                    <code>/trader remove &lt;id&gt;</code>
+                    <code>/trader list</code>
+                    <code>/trader info &lt;id&gt;</code>
+                    <code>/trader title &lt;id&gt; &lt;title&gt;</code>
+                    <code>/trader trade add &lt;id&gt; &lt;buy&gt; &lt;count&gt; &lt;sell&gt; &lt;count&gt;</code>
+                    <code>/trader trade clear &lt;id&gt;</code>
+                    <code>/trader reload</code>
+                </div>
+            </article>
+        </section>
+
+        <section class="feature-grid" id="staff">
+            <article class="card">
+                <h2>Moderation</h2>
+                <div class="command-grid">
+                    <code>/mute</code>
+                    <code>/tempmute</code>
+                    <code>/unmute</code>
+                    <code>/jail</code>
+                    <code>/tempjail</code>
+                    <code>/unjail</code>
+                    <code>/kick</code>
+                    <code>/possiblealts &lt;player&gt;</code>
+                </div>
+            </article>
+
+            <article class="card">
+                <h2>Staff Utility</h2>
+                <div class="command-grid">
+                    <code>/fly</code>
+                    <code>/flyadmin give &lt;player&gt;</code>
+                    <code>/flyadmin blacklist &lt;player&gt;</code>
+                    <code>/gm &lt;0|1|2|3|4&gt;</code>
+                    <code>/vanish</code>
+                    <code>/silentjoin</code>
+                    <code>/viewdistance &lt;distance&gt;</code>
+                    <code>/unbreakable</code>
+                </div>
+            </article>
+
+            <article class="card">
+                <h2>Protection Tools</h2>
+                <p>Spawn protection, blacklisted items, chat filters, and welcome rewards are configurable for launch control.</p>
+                <div class="command-grid">
+                    <code>/blacklistitem add</code>
+                    <code>/blacklistitem remove</code>
+                    <code>/blacklistitem list</code>
+                    <code>/welcome enable</code>
+                    <code>/welcome disable</code>
+                    <code>/ss reload</code>
+                </div>
+            </article>
+        </section>
+
+        <section class="feature-grid" id="discord">
+            <article class="card wide-card">
+                <span class="card-number">10</span>
+                <h2>Discord Integration</h2>
+                <p>The bot syncs faction, Wanderer, Haven, and Mortal roles, handles account linking, and bridges cleaned Minecraft death/chat messages.</p>
+                <ul>
+                    <li>Haven is automatically applied unless a player opts into Mortal.</li>
+                    <li>Faction role changes remove Wanderer.</li>
+                    <li>Linking uses the Discord slash command flow and blocks progression until linked or staff-verified.</li>
+                    <li>Death bridge messages are formatted for cleaner Discord output.</li>
+                </ul>
+            </article>
+        </section>
+
+        <section class="feature-grid" id="checklist">
+            <article class="card wide-card">
+                <span class="card-number">11</span>
+                <h2>Launch Setup Checklist</h2>
+                <ul>
+                    <li>Build and upload the latest server-side jar.</li>
+                    <li>Start the server once so all data files generate.</li>
+                    <li>Edit <code>server-side-config.json</code> for prefixes, colors, timings, rewards, messages, blocked words, and Discord role IDs.</li>
+                    <li>Set faction homes with <code>/factionadmin sethome &lt;faction&gt;</code>.</li>
+                    <li>Disable blocked recipes with <code>/recipes disable &lt;recipe&gt;</code>, then confirm <code>/recipes reload</code>.</li>
+                    <li>Prepare custom traders and verify their trades after restart.</li>
+                    <li>Disable launch welcome rewards until ready with <code>/welcome disable</code>.</li>
+                    <li>Run <code>/ss reload</code> after config edits and restart after jar changes.</li>
+                </ul>
+            </article>
         </section>
 
         <footer class="footer">
             <img src="logo.gif" alt="Saurona Logo">
             <p>Saurona</p>
-            <span>Server rules and information.</span>
+            <span>Server-side feature reference for staff and launch setup.</span>
             <a href="https://discord.gg/ttMW46d54h" target="_blank">Join the Discord</a>
         </footer>
     </main>
